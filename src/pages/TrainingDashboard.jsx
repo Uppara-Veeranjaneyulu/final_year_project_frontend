@@ -9,7 +9,7 @@ import Card from '../components/ui/Card'
 import Badge from '../components/ui/Badge'
 import SectionHeader from '../components/ui/SectionHeader'
 import { DATASETS, ML_MODELS, RL_MODELS, PPO_CONFIG } from '../utils/paperData'
-import { resetSimulation, scheduleTask } from '../api/client'
+import { resetSimulation, scheduleTask, API_BASE } from '../api/client'
 
 const STEPS = [
   { id: 1, label: 'Select Dataset',     icon: '🗄️' },
@@ -93,7 +93,7 @@ export default function TrainingDashboard() {
   const startTraining = async () => {
     setTraining(true)
     setProgress(0)
-    setLogLines(['[00:00] Connecting to Flask Backend http://localhost:5000...'])
+    setLogLines([`[00:00] Connecting to Flask Backend ${API_BASE}...`])
     setDone(false)
 
     // Call Flask reset endpoint

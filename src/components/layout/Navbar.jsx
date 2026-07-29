@@ -175,7 +175,7 @@ export default function Navbar() {
           <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border border-surface-200 dark:border-surface-700 bg-surface-50 dark:bg-surface-800">
             <span className={`w-2 h-2 rounded-full ${backendStatus === 'online' ? 'bg-emerald-500 animate-pulse' : 'bg-red-400'}`}></span>
             <span className="text-surface-600 dark:text-surface-300">
-              {backendStatus === 'online' ? 'Flask :5000' : 'Backend Offline'}
+              {backendStatus === 'online' ? 'Flask API' : 'Backend Offline'}
             </span>
           </div>
 

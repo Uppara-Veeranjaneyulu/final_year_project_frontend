@@ -3,6 +3,7 @@ import Badge from '../components/ui/Badge'
 import PageLayout from '../components/layout/PageLayout'
 import Card from '../components/ui/Card'
 import SectionHeader from '../components/ui/SectionHeader'
+import { API_BASE } from '../api/client'
 
 const ENDPOINTS = [
   {
@@ -128,7 +129,7 @@ export default function APIDocs() {
           <SectionHeader
             label="API Reference"
             title="REST API Documentation"
-            subtitle="The Flask backend exposes a REST API for training, evaluation, and prediction. Base URL: http://localhost:5000"
+            subtitle={`The Flask backend exposes a REST API for training, evaluation, and prediction. Base URL: ${API_BASE}`}
           />
 
           {/* Base URL info */}
@@ -136,7 +137,7 @@ export default function APIDocs() {
             <div className="flex flex-wrap gap-4 text-sm">
               <div>
                 <span className="text-surface-400 text-xs">Base URL</span>
-                <p className="font-mono text-surface-900 dark:text-white">http://localhost:5000/api</p>
+                <p className="font-mono text-surface-900 dark:text-white">{API_BASE}/api/v1</p>
               </div>
               <div>
                 <span className="text-surface-400 text-xs">Content Type</span>
