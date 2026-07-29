@@ -9,6 +9,7 @@ import {
 } from 'react-icons/hi'
 import { MdScience } from 'react-icons/md'
 import { useTheme } from '../../hooks/useTheme'
+import { checkBackendHealth } from '../../api/client'
 
 const NAV_LINKS = [
   { label: 'Home',        href: '/' },
@@ -73,9 +74,27 @@ function DropdownMenu({ items, isOpen }) {
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [openDropdown, setOpenDropdown] = useState(null)
+  const [backendStatus, setBackendStatus] = useState('checking')
   const [scrolled, setScrolled] = useState(false)
   const { dark, toggle } = useTheme()
   const location = useLocation()
+
+  // Poll backend health status
+  useEffect(() => {
+    let isMounted = true
+    const check = async () => {
+      const res = await checkBackendHealth()
+      if (isMounted) {
+        setBackendStatus(res && res.status === 'healthy' ? 'online' : 'offline')
+      }
+    }
+    check()
+    const interval = setInterval(check, 10000)
+    return () => {
+      isMounted = false
+      clearInterval(interval)
+    }
+  }, [])
 
   // Close mobile on route change
   useEffect(() => {
@@ -151,6 +170,14 @@ export default function Navbar() {
             <HiOutlineExternalLink className="text-xs" />
             Paper
           </a>
+
+          {/* Backend Status Badge */}
+          <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border border-surface-200 dark:border-surface-700 bg-surface-50 dark:bg-surface-800">
+            <span className={`w-2 h-2 rounded-full ${backendStatus === 'online' ? 'bg-emerald-500 animate-pulse' : 'bg-red-400'}`}></span>
+            <span className="text-surface-600 dark:text-surface-300">
+              {backendStatus === 'online' ? 'Flask :5000' : 'Backend Offline'}
+            </span>
+          </div>
 
           {/* Dark Mode Toggle */}
           <button

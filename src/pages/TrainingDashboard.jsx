@@ -9,6 +9,7 @@ import Card from '../components/ui/Card'
 import Badge from '../components/ui/Badge'
 import SectionHeader from '../components/ui/SectionHeader'
 import { DATASETS, ML_MODELS, RL_MODELS, PPO_CONFIG } from '../utils/paperData'
+import { resetSimulation, scheduleTask } from '../api/client'
 
 const STEPS = [
   { id: 1, label: 'Select Dataset',     icon: '🗄️' },
@@ -89,18 +90,28 @@ export default function TrainingDashboard() {
 
   const currentDataset = DATASETS.find((d) => d.id === selectedDataset)
 
-  const startTraining = () => {
+  const startTraining = async () => {
     setTraining(true)
     setProgress(0)
-    setLogLines([])
+    setLogLines(['[00:00] Connecting to Flask Backend http://localhost:5000...'])
     setDone(false)
+
+    // Call Flask reset endpoint
+    const resetRes = await resetSimulation()
+    if (resetRes && resetRes.status === 'reset_success') {
+      setLogLines((prev) => [...prev, '[00:01] ✓ Connected! Gymnasium CloudSchedulerEnv reset successfully'])
+    } else {
+      setLogLines((prev) => [...prev, '[00:01] ⚠️ Flask server offline — executing simulation mode'])
+    }
 
     let logIdx = 0
     let prog = 0
 
-    const interval = setInterval(() => {
+    const interval = setInterval(async () => {
       if (logIdx < MOCK_LOG.length) {
         setLogLines((prev) => [...prev, MOCK_LOG[logIdx]])
+        // Trigger live backend scheduling decision
+        scheduleTask(selectedModel || 'ppo')
         logIdx++
       }
       prog += 100 / MOCK_LOG.length
