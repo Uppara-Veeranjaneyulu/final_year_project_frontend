@@ -1,17 +1,18 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { HiOutlineSearch } from 'react-icons/hi'
 import PageLayout from '../components/layout/PageLayout'
 import Badge from '../components/ui/Badge'
 import SectionHeader from '../components/ui/SectionHeader'
+import { getForecastingEvaluation } from '../api/client'
 
-const EXPERIMENTS = [
+const INITIAL_EXPERIMENTS = [
   { id: 'EXP-001', dataset: 'HPC2N', model: 'SARIMAX',      type: 'Forecasting', mae: 0.0248, rmse: 0.0708, r2: 0.270,   status: 'completed', date: 'Apr 2024',  note: 'Best forecasting model — selected as backbone' },
   { id: 'EXP-002', dataset: 'HPC2N', model: 'Naive Persistence', type: 'Forecasting', mae: 0.0196, rmse: 0.0789, r2: 0.092, status: 'completed', date: 'Apr 2024', note: 'Strong baseline; lower MAE but worse RMSE than SARIMAX' },
   { id: 'EXP-003', dataset: 'HPC2N', model: 'GRU',           type: 'Forecasting', mae: 0.2000, rmse: 0.2352, r2: -7.06,  status: 'completed', date: 'Apr 2024',  note: 'Failed under temporal regime shift' },
   { id: 'EXP-004', dataset: 'HPC2N', model: 'LSTM',          type: 'Forecasting', mae: 0.4806, rmse: 0.4981, r2: -35.15, status: 'completed', date: 'Apr 2024',  note: 'Severe regime shift failure' },
   { id: 'EXP-005', dataset: 'HPC2N', model: 'TCN',           type: 'Forecasting', mae: 0.7047, rmse: 0.7419, r2: -79.19, status: 'completed', date: 'Apr 2024',  note: 'Causal dilated convolutions — regime shift' },
   { id: 'EXP-006', dataset: 'HPC2N', model: 'Bidirectional LSTM', type: 'Forecasting', mae: 0.7683, rmse: 0.8043, r2: -93.25, status: 'completed', date: 'Apr 2024', note: 'Worst RNN result' },
-  { id: 'EXP-007', dataset: 'HPC2N', model: 'Transformer',   type: 'Forecasting', mae: 2.0538, rmse: 2.1734, r2: -687.23, status: 'completed', date: 'Apr 2024', note: 'Catastrophic failure under regime shift' },
+  { id: 'EXP-007', dataset: 'HPC2N', model: 'Transformer Encoder',   type: 'Forecasting', mae: 2.0538, rmse: 2.1734, r2: -687.23, status: 'completed', date: 'Apr 2024', note: 'Catastrophic failure under regime shift' },
   { id: 'EXP-008', dataset: 'Cloud Simulation', model: 'PPO',        type: 'Scheduling', throughput: 0.590, dropRate: '41.00%', status: 'completed', date: 'Aug 2024', note: 'Highest throughput, lowest drop rate' },
   { id: 'EXP-009', dataset: 'Cloud Simulation', model: 'Least Connections', type: 'Scheduling', throughput: 0.467, dropRate: '—', status: 'completed', date: 'Aug 2024', note: 'Better latency/load variance than PPO' },
   { id: 'EXP-010', dataset: 'Cloud Simulation', model: 'Round Robin', type: 'Scheduling', throughput: 0.463, dropRate: '—', status: 'completed', date: 'Aug 2024', note: 'Standard baseline' },
@@ -26,8 +27,25 @@ const STATUS_COLORS = { completed: 'green', pending: 'yellow', failed: 'red' }
 export default function Experiments() {
   const [search, setSearch] = useState('')
   const [typeFilter, setTypeFilter] = useState('All')
+  const [experiments, setExperiments] = useState(INITIAL_EXPERIMENTS)
 
-  const filtered = EXPERIMENTS.filter((e) => {
+  useEffect(() => {
+    async function syncBackendEvaluation() {
+      const apiData = await getForecastingEvaluation()
+      if (apiData && apiData.results) {
+        const liveMap = new Map(apiData.results.map((r) => [r.model.toLowerCase(), r]))
+        setExperiments((prev) =>
+          prev.map((e) => {
+            const live = liveMap.get(e.model.toLowerCase())
+            return live ? { ...e, mae: live.mae, rmse: live.rmse, r2: live.r2 } : e
+          })
+        )
+      }
+    }
+    syncBackendEvaluation()
+  }, [])
+
+  const filtered = experiments.filter((e) => {
     const matchType = typeFilter === 'All' || e.type === typeFilter
     const matchSearch = e.model.toLowerCase().includes(search.toLowerCase()) ||
                         e.id.toLowerCase().includes(search.toLowerCase())
