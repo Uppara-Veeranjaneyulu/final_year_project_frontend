@@ -61,6 +61,7 @@ export default function TrainingDashboard() {
   const [progress, setProgress] = useState(0)
   const [logLines, setLogLines] = useState([])
   const [done, setDone] = useState(false)
+  const [liveResults, setLiveResults] = useState(null)
 
   const [hyperparams, setHyperparams] = useState({
     learningRate: '0.0003',
@@ -76,6 +77,7 @@ export default function TrainingDashboard() {
     setTraining(true)
     setProgress(0)
     setDone(false)
+    setLiveResults(null)
 
     const initialLogs = [
       `[00:00] Initializing environment for dataset: ${currentDataset?.name || 'HPC2N Workload Dataset'}`,
@@ -93,8 +95,14 @@ export default function TrainingDashboard() {
       setLogLines((prev) => [...prev, '[00:04] ℹ️ Executing environment simulation engine'])
     }
 
-    const totalSteps = 10
+    const totalSteps = parseInt(hyperparams.episodes) > 0 ? 10 : 10
     let stepCount = 0
+
+    // Accumulators for real metrics
+    let totalThroughput = 0
+    let totalReward = 0
+    let droppedCount = 0
+    let acceptedCount = 0
 
     const interval = setInterval(async () => {
       stepCount++
@@ -104,16 +112,25 @@ export default function TrainingDashboard() {
       const timeStr = `00:${String(stepCount * 3).padStart(2, '0')}`
       if (stepRes && stepRes.metrics) {
         const { reward, selected_server, metrics } = stepRes
+        totalThroughput += metrics.throughput || 0
+        totalReward += typeof reward === 'number' ? reward : 0
+        if (metrics.dropped) droppedCount++
+        else acceptedCount++
+
         setLogLines((prev) => [
           ...prev,
-          `[${timeStr}] Ep ${stepCount * 10}/${hyperparams.episodes} | Policy: ${policy.toUpperCase()} -> Server ${selected_server} | Reward: ${typeof reward === 'number' ? reward.toFixed(2) : reward} | Throughput: ${metrics.throughput ? metrics.throughput.toFixed(3) : '0.590'}`
+          `[${timeStr}] Ep ${stepCount * Math.ceil(parseInt(hyperparams.episodes) / totalSteps)}/${hyperparams.episodes} | Policy: ${policy.toUpperCase()} → Server ${selected_server} | Reward: ${typeof reward === 'number' ? reward.toFixed(2) : reward} | Throughput: ${metrics.throughput ? metrics.throughput.toFixed(3) : '—'} | CPU: ${metrics.cpu_util ? (metrics.cpu_util * 100).toFixed(1) : '—'}%`
         ])
       } else {
+        // Fallback simulation when backend is unavailable
         const rewardVal = (2.3 + stepCount * 0.5).toFixed(2)
         const tpVal = (0.42 + stepCount * 0.017).toFixed(3)
+        totalThroughput += parseFloat(tpVal)
+        totalReward += parseFloat(rewardVal)
+        acceptedCount++
         setLogLines((prev) => [
           ...prev,
-          `[${timeStr}] Ep ${stepCount * 10}/${hyperparams.episodes} | Policy: ${policy.toUpperCase()} -> Server ${stepCount % 4} | Reward: ${rewardVal} | Throughput: ${tpVal}`
+          `[${timeStr}] Ep ${stepCount * 10}/${hyperparams.episodes} | Policy: ${policy.toUpperCase()} → Server ${stepCount % 4} | Reward: ${rewardVal} | Throughput: ${tpVal}`
         ])
       }
 
@@ -122,11 +139,28 @@ export default function TrainingDashboard() {
 
       if (stepCount >= totalSteps) {
         clearInterval(interval)
+
+        // Compute real aggregate metrics from accumulated step data
+        const avgThroughput = (totalThroughput / totalSteps).toFixed(3)
+        const totalTasks = acceptedCount + droppedCount
+        const dropRatePct = totalTasks > 0 ? ((droppedCount / totalTasks) * 100).toFixed(2) : '0.00'
+        const avgReward = (totalReward / totalSteps).toFixed(2)
+
+        const computed = {
+          throughput: avgThroughput,
+          dropRate: `${dropRatePct}%`,
+          episodes: hyperparams.episodes,
+          avgReward,
+          dataset: currentDataset?.shortName || 'Unknown',
+          model: policy.toUpperCase(),
+        }
+        setLiveResults(computed)
+
         setLogLines((prev) => [
           ...prev,
           `[00:33] Training complete! Model evaluation finished.`,
-          `[00:34] ✓ Final Throughput: 0.590`,
-          `[00:34] ✓ Drop Rate: 41.00%`,
+          `[00:34] ✓ Final Avg Throughput: ${avgThroughput} | Dataset: ${computed.dataset} | Policy: ${computed.model}`,
+          `[00:34] ✓ Task Drop Rate: ${dropRatePct}% | Avg Reward: ${avgReward}`,
         ])
         setDone(true)
         setTraining(false)
@@ -134,6 +168,7 @@ export default function TrainingDashboard() {
       }
     }, 500)
   }
+
 
   return (
     <PageLayout>
@@ -392,14 +427,39 @@ export default function TrainingDashboard() {
                 </div>
                 <div>
                   <h3 className="font-semibold text-surface-900 dark:text-white">Training Complete!</h3>
-                  <p className="text-xs text-surface-400">PPO scheduler trained successfully</p>
+                  <p className="text-xs text-surface-400">
+                    {liveResults
+                      ? `${liveResults.model} scheduler evaluated on ${liveResults.dataset}`
+                      : 'PPO scheduler trained successfully'}
+                  </p>
                 </div>
               </div>
-              <div className="grid sm:grid-cols-3 gap-4 mb-6">
+              <div className="grid sm:grid-cols-4 gap-4 mb-6">
                 {[
-                  { label: 'Throughput', value: '0.590', color: 'text-primary-700 dark:text-primary-300', note: 'Highest among all schedulers' },
-                  { label: 'Drop Rate',  value: '41.00%', color: 'text-emerald-600 dark:text-emerald-400', note: 'Lowest among all schedulers' },
-                  { label: 'Episodes',   value: '100',    color: 'text-surface-900 dark:text-white', note: '300 steps/episode' },
+                  {
+                    label: 'Avg Throughput',
+                    value: liveResults?.throughput ?? '—',
+                    color: 'text-primary-700 dark:text-primary-300',
+                    note: 'Tasks completed / total steps',
+                  },
+                  {
+                    label: 'Task Drop Rate',
+                    value: liveResults?.dropRate ?? '—',
+                    color: 'text-emerald-600 dark:text-emerald-400',
+                    note: 'Dropped / total tasks',
+                  },
+                  {
+                    label: 'Avg Reward',
+                    value: liveResults?.avgReward ?? '—',
+                    color: 'text-yellow-600 dark:text-yellow-400',
+                    note: 'Mean adaptive reward signal',
+                  },
+                  {
+                    label: 'Episodes',
+                    value: liveResults?.episodes ?? hyperparams.episodes,
+                    color: 'text-surface-900 dark:text-white',
+                    note: '300 steps/episode',
+                  },
                 ].map((m) => (
                   <div key={m.label} className="metric-pill text-center">
                     <span className="text-xs text-surface-400">{m.label}</span>
@@ -409,13 +469,14 @@ export default function TrainingDashboard() {
                 ))}
               </div>
               <div className="flex gap-3">
-                <button onClick={() => { setStep(1); setDone(false); setProgress(0); setLogLines([]) }} className="btn-outline">
+                <button onClick={() => { setStep(1); setDone(false); setProgress(0); setLogLines([]); setLiveResults(null) }} className="btn-outline">
                   New Experiment
                 </button>
                 <a href="/results" className="btn-primary">View Full Results →</a>
               </div>
             </Card>
           )}
+
         </div>
       </div>
     </PageLayout>
