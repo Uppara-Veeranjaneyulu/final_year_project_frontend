@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import { HiOutlineMail, HiOutlineLocationMarker, HiOutlineAcademicCap } from 'react-icons/hi'
+import { Link } from 'react-router-dom'
+import { HiOutlineMail, HiOutlineUsers, HiOutlineArrowRight } from 'react-icons/hi'
 import PageLayout from '../components/layout/PageLayout'
 import Card from '../components/ui/Card'
 import SectionHeader from '../components/ui/SectionHeader'
-import { TEAM } from '../utils/paperData'
 
 export default function Contact() {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' })
@@ -87,62 +87,40 @@ export default function Contact() {
 
             {/* Contact info */}
             <div>
-              <h3 className="font-semibold text-surface-900 dark:text-white mb-4">Project Contacts</h3>
+              <h3 className="font-semibold text-surface-900 dark:text-white mb-4">Research & Team Inquiries</h3>
 
-              {/* Guide */}
-              <Card className="mb-4">
+              <Card className="mb-6">
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white font-bold">
-                    VS
+                  <div className="w-10 h-10 rounded-xl bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 flex items-center justify-center font-bold">
+                    <HiOutlineMail className="text-xl" />
                   </div>
                   <div>
-                    <p className="font-medium text-surface-900 dark:text-white text-sm">Dr. Vandhana S</p>
-                    <p className="text-xs text-surface-400">Project Guide</p>
+                    <p className="font-medium text-surface-900 dark:text-white text-sm">General Support</p>
+                    <p className="text-xs text-surface-400">Questions & Inquiries</p>
                   </div>
                 </div>
-                <a href="mailto:s_vandhana@cb.amrita.edu" className="flex items-center gap-2 text-xs text-primary-600 dark:text-primary-400 hover:underline">
-                  <HiOutlineMail />
-                  s_vandhana@cb.amrita.edu
-                </a>
+                <p className="text-xs text-surface-500 dark:text-surface-400 leading-relaxed mb-3">
+                  Have questions about the CloudRL research platform or models? Send us a message using the form.
+                </p>
               </Card>
 
-              {/* Students */}
-              <div className="space-y-2 mb-6">
-                {TEAM.filter((m) => !m.isGuide).map((m) => (
-                  <div key={m.id} className="flex items-center justify-between p-3 rounded-xl border border-surface-100 dark:border-surface-800">
-                    <div className="flex items-center gap-2.5">
-                      <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${m.color} flex items-center justify-center text-white text-xs font-bold`}>
-                        {m.avatar}
-                      </div>
-                      <div>
-                        <p className="text-sm font-medium text-surface-900 dark:text-white">{m.name}</p>
-                        <p className="text-xs text-surface-400">{m.regId}</p>
-                      </div>
-                    </div>
-                    <a href={`mailto:${m.email}`} className="text-surface-400 hover:text-primary-600 transition-colors">
-                      <HiOutlineMail />
-                    </a>
+              <Card>
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-xl bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold">
+                    <HiOutlineUsers className="text-xl" />
                   </div>
-                ))}
-              </div>
-
-              {/* University */}
-              <div className="space-y-3">
-                <div className="flex gap-3">
-                  <HiOutlineLocationMarker className="text-surface-400 flex-shrink-0 mt-0.5" />
                   <div>
-                    <p className="text-sm font-medium text-surface-900 dark:text-white">Amrita Vishwa Vidyapeetham</p>
-                    <p className="text-xs text-surface-500">Coimbatore, Tamil Nadu, India</p>
+                    <p className="font-medium text-surface-900 dark:text-white text-sm">Team Information</p>
+                    <p className="text-xs text-surface-400">Researchers & Contributors</p>
                   </div>
                 </div>
-                <div className="flex gap-3">
-                  <HiOutlineAcademicCap className="text-surface-400 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <p className="text-sm font-medium text-surface-900 dark:text-white">Amrita School of Computing</p>
-                    <p className="text-xs text-surface-500">Department of Computer Science & Engineering</p>
-                  </div>
-                </div>
-              </div>
+                <p className="text-xs text-surface-500 dark:text-surface-400 leading-relaxed mb-4">
+                  All details regarding the researchers, project guide, and contributors are available on the Team page.
+                </p>
+                <Link to="/team" className="btn-outline btn-sm gap-1 w-full justify-center">
+                  View Team Details <HiOutlineArrowRight />
+                </Link>
+              </Card>
             </div>
           </div>
         </div>

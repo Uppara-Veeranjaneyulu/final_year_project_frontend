@@ -106,14 +106,6 @@ export default function ResearchPaper() {
             <h1 className="text-3xl sm:text-4xl font-bold text-surface-900 dark:text-white leading-tight mb-3">
               {PAPER.fullTitle}
             </h1>
-            <p className="text-sm text-surface-500 dark:text-surface-400 mb-4">
-              Vandhana S · Balla Kumar Basavaraju · Chappidi Kuladeep Reddy ·
-              Uppara Veeranjaneyulu · Vullam Teja · Vejju Sasi Kiran Yasaswi
-            </p>
-            <p className="text-xs text-surface-400">
-              Department of Computer Science & Engineering, Amrita School of Computing,
-              Amrita Vishwa Vidyapeetham, Coimbatore, India
-            </p>
             <div className="flex flex-wrap justify-center gap-1.5 mt-4">
               {PAPER.keywords.slice(0, 8).map((kw) => (
                 <Badge key={kw} variant="gray">{kw}</Badge>

@@ -24,6 +24,21 @@ const CustomTooltip = ({ active, payload, label }) => {
 }
 
 export default function Results() {
+  const handleExport = () => {
+    const exportData = {
+      forecasting_results: FORECASTING_RESULTS,
+      scheduling_results: SCHEDULING_RESULTS,
+      exported_at: new Date().toISOString(),
+    }
+    const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = 'cloudrl_research_results.json'
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+
   return (
     <PageLayout>
       <div className="pt-20 pb-16 px-4 sm:px-6">
@@ -34,8 +49,8 @@ export default function Results() {
               title="Experimental Results"
               subtitle="All results are sourced directly from the research paper PDF. No results are fabricated or estimated."
             />
-            <button className="btn-outline gap-2 flex-shrink-0">
-              <HiOutlineDownload /> Export
+            <button onClick={handleExport} className="btn-outline gap-2 flex-shrink-0">
+              <HiOutlineDownload /> Export Results
             </button>
           </div>
 

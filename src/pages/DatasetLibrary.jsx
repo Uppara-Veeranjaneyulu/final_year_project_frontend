@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { HiOutlineSearch, HiOutlineDatabase, HiOutlineDownload } from 'react-icons/hi'
 import PageLayout from '../components/layout/PageLayout'
@@ -8,6 +8,7 @@ import SectionHeader from '../components/ui/SectionHeader'
 import Tabs from '../components/ui/Tabs'
 import { DATASETS } from '../utils/paperData'
 import { getDatasetColor } from '../utils/formatters'
+import { getDatasetsList } from '../api/client'
 
 const CATEGORIES = ['All', 'Cloud', 'HPC', 'Scientific']
 
@@ -96,7 +97,20 @@ function DatasetCard({ ds, selected, onSelect }) {
           >
             {selected ? '✓ Selected for Training' : 'Select for Training'}
           </button>
-          <button className="btn-sm btn-ghost p-2">
+          <button
+            onClick={(e) => {
+              e.stopPropagation()
+              const blob = new Blob([JSON.stringify(ds, null, 2)], { type: 'application/json' })
+              const url = URL.createObjectURL(blob)
+              const a = document.createElement('a')
+              a.href = url
+              a.download = `${ds.id}_metadata.json`
+              a.click()
+              URL.revokeObjectURL(url)
+            }}
+            title="Download dataset metadata JSON"
+            className="btn-sm btn-ghost p-2"
+          >
             <HiOutlineDownload />
           </button>
         </div>
@@ -109,8 +123,24 @@ export default function DatasetLibrary() {
   const [search, setSearch] = useState('')
   const [category, setCategory] = useState('All')
   const [selected, setSelected] = useState(null)
+  const [datasetList, setDatasetList] = useState(DATASETS)
 
-  const filtered = DATASETS.filter((ds) => {
+  useEffect(() => {
+    async function fetchLiveDatasets() {
+      const data = await getDatasetsList()
+      if (data && data.datasets) {
+        // Merge live api datasets with paper datasets metadata
+        const liveMap = new Map(data.datasets.map((d) => [d.id, d]))
+        setDatasetList(DATASETS.map((ds) => {
+          const live = liveMap.get(ds.id)
+          return live ? { ...ds, name: live.name, role: live.role || ds.usedIn } : ds
+        }))
+      }
+    }
+    fetchLiveDatasets()
+  }, [])
+
+  const filtered = datasetList.filter((ds) => {
     const matchCat = category === 'All' || ds.category === category
     const matchSearch = ds.name.toLowerCase().includes(search.toLowerCase()) ||
                         ds.description.toLowerCase().includes(search.toLowerCase())

@@ -49,18 +49,9 @@ export default function Home() {
       {/* ===================== HERO ===================== */}
       <section className="pt-28 pb-20 px-4 sm:px-6 bg-gradient-to-b from-white via-surface-50/50 to-white dark:from-surface-950 dark:via-surface-900/50 dark:to-surface-950">
         <div className="max-w-5xl mx-auto text-center">
-          {/* Label */}
-          <motion.div
-            custom={0} variants={fadeUp} initial="hidden" animate="show"
-            className="flex items-center justify-center gap-2 mb-6"
-          >
-            <Badge variant="blue" dot>Final Year B.Tech Project</Badge>
-            <Badge variant="gray">CSE • Amrita Vishwa Vidyapeetham</Badge>
-          </motion.div>
-
           {/* Title */}
           <motion.h1
-            custom={1} variants={fadeUp} initial="hidden" animate="show"
+            custom={0} variants={fadeUp} initial="hidden" animate="show"
             className="text-4xl sm:text-5xl lg:text-6xl font-bold text-surface-900 dark:text-white leading-tight mb-4"
           >
             Reinforcement Learning‑Based
@@ -72,19 +63,10 @@ export default function Home() {
 
           {/* Subtitle */}
           <motion.p
-            custom={2} variants={fadeUp} initial="hidden" animate="show"
-            className="text-lg text-surface-500 dark:text-surface-400 max-w-3xl mx-auto mb-3"
+            custom={1} variants={fadeUp} initial="hidden" animate="show"
+            className="text-lg text-surface-500 dark:text-surface-400 max-w-3xl mx-auto mb-8"
           >
             {PAPER.subtitle}
-          </motion.p>
-
-          {/* Authors */}
-          <motion.p
-            custom={3} variants={fadeUp} initial="hidden" animate="show"
-            className="text-sm text-surface-400 dark:text-surface-500 mb-8"
-          >
-            Vandhana S (Guide) &nbsp;·&nbsp; Balla Kumar Basavaraju &nbsp;·&nbsp; Chappidi Kuladeep Reddy &nbsp;·&nbsp;
-            Uppara Veeranjaneyulu &nbsp;·&nbsp; Vullam Teja &nbsp;·&nbsp; Vejju Sasi Kiran Yasaswi
           </motion.p>
 
           {/* CTA Buttons */}

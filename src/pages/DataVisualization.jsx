@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
   BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid,
   Tooltip, Legend, ResponsiveContainer, RadarChart, PolarGrid,
@@ -12,6 +12,7 @@ import Badge from '../components/ui/Badge'
 import {
   FORECASTING_RESULTS, SCHEDULING_RESULTS, SERVER_CONFIGS, TASK_CATEGORIES
 } from '../utils/paperData'
+import { getForecastingEvaluation } from '../api/client'
 
 const COLORS = {
   primary: '#2563eb',
@@ -37,7 +38,25 @@ const CustomTooltip = ({ active, payload, label }) => {
 
 /* Chart 1: Forecasting Model Comparison */
 function ForecastingChart() {
-  const data = FORECASTING_RESULTS.map((r) => ({
+  const [results, setResults] = useState(FORECASTING_RESULTS)
+
+  useEffect(() => {
+    async function loadLiveEvaluation() {
+      const live = await getForecastingEvaluation()
+      if (live && live.results) {
+        setResults(live.results.map((r) => ({
+          model: r.model,
+          mae: r.mae,
+          rmse: r.rmse,
+          r2: r.r2,
+          isWinner: r.selected,
+        })))
+      }
+    }
+    loadLiveEvaluation()
+  }, [])
+
+  const data = results.map((r) => ({
     name: r.model.length > 12 ? r.model.slice(0, 12) + '…' : r.model,
     fullName: r.model,
     MAE: r.mae,

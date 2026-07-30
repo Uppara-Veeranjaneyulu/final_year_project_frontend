@@ -160,16 +160,14 @@ export default function Navbar() {
 
         {/* Actions */}
         <div className="flex items-center gap-2">
-          {/* GitHub */}
-          <a
-            href="#"
+          {/* Paper Link */}
+          <Link
+            to="/research-paper"
             className="hidden sm:flex btn-ghost text-sm py-1.5 gap-1.5"
-            target="_blank"
-            rel="noopener noreferrer"
           >
             <HiOutlineExternalLink className="text-xs" />
             Paper
-          </a>
+          </Link>
 
           {/* Backend Status Badge */}
           <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border border-surface-200 dark:border-surface-700 bg-surface-50 dark:bg-surface-800">

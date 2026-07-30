@@ -137,3 +137,16 @@ export async function getDatasetSeries(datasetId = 'google-cluster-v1', length =
     return null
   }
 }
+
+/**
+ * Fetch forecasting models evaluation results
+ */
+export async function getForecastingEvaluation() {
+  try {
+    const res = await fetch(`${API_BASE}/api/v1/forecasting/evaluation`)
+    return await res.json()
+  } catch (err) {
+    console.error('API getForecastingEvaluation error:', err)
+    return null
+  }
+}

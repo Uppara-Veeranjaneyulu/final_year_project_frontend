@@ -23,13 +23,13 @@ const SECTIONS = [
 ]
 
 const SETUP_CODE = `# Clone the frontend
-git clone https://github.com/amrita/cloudrl-frontend.git
+git clone https://github.com/cloudrl/cloudrl-frontend.git
 cd cloudrl-frontend
 npm install
 npm run dev
 
 # Clone the backend
-git clone https://github.com/amrita/cloudrl-backend.git
+git clone https://github.com/cloudrl/cloudrl-backend.git
 cd cloudrl-backend
 pip install -r requirements.txt
 python app.py`

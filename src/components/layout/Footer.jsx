@@ -39,13 +39,8 @@ export default function Footer() {
                 CloudRL<span className="text-primary-600">.</span>Research
               </span>
             </Link>
-            <p className="text-sm text-surface-500 dark:text-surface-400 leading-relaxed max-w-xs mb-4">
+            <p className="text-sm text-surface-500 dark:text-surface-400 leading-relaxed max-w-xs">
               A research platform for RL-based dynamic task scheduling and resource allocation in cloud environments.
-            </p>
-            <p className="text-xs text-surface-400 dark:text-surface-500">
-              Department of Computer Science & Engineering<br />
-              Amrita School of Computing<br />
-              Amrita Vishwa Vidyapeetham, Coimbatore
             </p>
           </div>
 
@@ -77,16 +72,16 @@ export default function Footer() {
         {/* Bottom */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-surface-400 dark:text-surface-500">
           <p>
-            © 2024 Amrita Vishwa Vidyapeetham. Final Year B.Tech Project — CSE Department.
+            © 2024 CloudRL Research Platform. All rights reserved.
           </p>
           <div className="flex items-center gap-4">
             <span>Paper: RL-Based Dynamic Task Scheduling</span>
-            <a
-              href="#"
+            <Link
+              to="/documentation"
               className="flex items-center gap-1 hover:text-primary-600 transition-colors"
             >
-              GitHub <HiOutlineExternalLink />
-            </a>
+              Docs <HiOutlineExternalLink />
+            </Link>
           </div>
         </div>
       </div>

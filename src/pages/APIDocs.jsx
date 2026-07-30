@@ -8,62 +8,76 @@ import { API_BASE } from '../api/client'
 const ENDPOINTS = [
   {
     method: 'GET',
-    path: '/api/health',
-    desc: 'Backend health check',
+    path: '/health',
+    desc: 'API backend health check status',
     response: '{ "status": "ok", "version": "1.0.0" }',
     auth: false,
   },
   {
     method: 'GET',
-    path: '/api/datasets',
-    desc: 'List all available datasets',
-    response: '{ "datasets": [{ "id": "hpc2n", "name": "HPC2N", "size": "Medium" }] }',
-    auth: false,
-  },
-  {
-    method: 'POST',
-    path: '/api/train/forecasting',
-    desc: 'Train a forecasting model',
-    body: '{ "dataset": "hpc2n", "model": "sarimax", "window_size": 24 }',
-    response: '{ "job_id": "exp-001", "status": "started" }',
-    auth: true,
-  },
-  {
-    method: 'POST',
-    path: '/api/train/rl',
-    desc: 'Train an RL scheduling model',
-    body: '{ "model": "ppo", "episodes": 100, "batch_size": 256 }',
-    response: '{ "job_id": "exp-008", "status": "started" }',
-    auth: true,
-  },
-  {
-    method: 'GET',
-    path: '/api/results/:job_id',
-    desc: 'Get training results for a job',
-    response: '{ "mae": 0.0248, "rmse": 0.0708, "r2": 0.270 }',
-    auth: false,
-  },
-  {
-    method: 'POST',
-    path: '/api/predict',
-    desc: 'Run workload prediction',
-    body: '{ "model": "sarimax", "series": [0.12, 0.15, ...], "steps": 1 }',
-    response: '{ "prediction": 0.14, "confidence": 0.95 }',
+    path: '/api/v1/datasets/list',
+    desc: 'List all 10 workload trace datasets',
+    response: '{ "datasets": [{ "id": "google-cluster-v1", "name": "Google Cluster Workload Trace v1", "category": "Cloud" }] }',
     auth: false,
   },
   {
     method: 'GET',
-    path: '/api/experiments',
-    desc: 'List all experiments',
-    response: '{ "experiments": [{ "id": "EXP-001", "status": "completed" }] }',
+    path: '/api/v1/datasets/:dataset_id/series',
+    desc: 'Fetch dataset sample time series values',
+    response: '{ "dataset_id": "google-cluster-v1", "length": 100, "series": [0.41, 0.45, 0.48] }',
     auth: false,
   },
   {
-    method: 'DELETE',
-    path: '/api/experiments/:id',
-    desc: 'Delete an experiment',
-    response: '{ "deleted": "EXP-001" }',
-    auth: true,
+    method: 'POST',
+    path: '/api/v1/simulation/reset',
+    desc: 'Reset Gymnasium CloudSchedulerEnv environment',
+    response: '{ "observation": [0.12, 0.45, 0.0, ...], "status": "reset_success" }',
+    auth: false,
+  },
+  {
+    method: 'POST',
+    path: '/api/v1/simulation/step',
+    desc: 'Step environment with action (server index 0..N-1)',
+    body: '{ "action": 0 }',
+    response: '{ "observation": [...], "reward": 2.45, "done": false, "metrics": { "throughput": 0.59 } }',
+    auth: false,
+  },
+  {
+    method: 'GET',
+    path: '/api/v1/simulation/status',
+    desc: 'Get current simulation metrics and AdaptiveReward status',
+    response: '{ "current_step": 12, "completed_tasks": 10, "dropped_tasks": 2 }',
+    auth: false,
+  },
+  {
+    method: 'POST',
+    path: '/api/v1/scheduler/schedule',
+    desc: 'Execute task scheduling decision using PPO / Round Robin / Least Connections / Random',
+    body: '{ "policy": "ppo" }',
+    response: '{ "policy": "ppo", "selected_server": 1, "reward": 2.67, "metrics": { "throughput": 0.59 } }',
+    auth: false,
+  },
+  {
+    method: 'GET',
+    path: '/api/v1/scheduler/metrics/reward-weights',
+    desc: 'Fetch current weight vector & history from AdaptiveRewardManager',
+    response: '{ "current_weights": { "throughput": 0.25, "drop_rate": 0.35 }, "adaptation_rate": 0.05 }',
+    auth: false,
+  },
+  {
+    method: 'POST',
+    path: '/api/v1/forecasting/predict',
+    desc: 'Predict workload intensity using SARIMAX or baseline model',
+    body: '{ "history": [0.12, 0.15, 0.18, 0.22], "model": "sarimax" }',
+    response: '{ "model": "sarimax", "predicted_workload": 0.24, "input_window_length": 4 }',
+    auth: false,
+  },
+  {
+    method: 'GET',
+    path: '/api/v1/forecasting/evaluation',
+    desc: 'Fetch paper Table 1 verified forecasting results across 7 models',
+    response: '{ "results": [{ "model": "SARIMAX", "mae": 0.0248, "rmse": 0.0708, "r2": 0.270, "selected": true }] }',
+    auth: false,
   },
 ]
 
@@ -76,50 +90,34 @@ const METHOD_COLORS = {
 
 const EXAMPLE_PYTHON = `import requests
 
-BASE_URL = "http://localhost:5000/api"
+BASE_URL = "http://localhost:5000/api/v1"
 
-# Train SARIMAX on HPC2N dataset
-resp = requests.post(f"{BASE_URL}/train/forecasting", json={
-    "dataset": "hpc2n",
-    "model": "sarimax",
-    "window_size": 24,
-    "train_ratio": 0.8,
+# Predict workload using SARIMAX
+resp = requests.post(f"{BASE_URL}/forecasting/predict", json={
+    "history": [0.12, 0.15, 0.20, 0.25, 0.30],
+    "model": "sarimax"
 })
-job_id = resp.json()["job_id"]
+print("Predicted Workload:", resp.json()["predicted_workload"])
 
-# Poll for results
-import time
-while True:
-    result = requests.get(f"{BASE_URL}/results/{job_id}").json()
-    if result["status"] == "completed":
-        print(f"RMSE: {result['rmse']:.4f}")  # Expected: 0.0708
-        print(f"R²:   {result['r2']:.3f}")    # Expected: 0.270
-        break
-    time.sleep(2)`
-
-const EXAMPLE_JS = `// Using axios in the frontend
-import axios from 'axios'
-
-// Train PPO scheduler
-const response = await axios.post('/api/train/rl', {
-  model: 'ppo',
-  episodes: 100,
-  batch_size: 256,
-  learning_rate: 3e-4,
-  discount_factor: 0.99,
+# Reset simulation and schedule a task via PPO
+requests.post(f"{BASE_URL}/simulation/reset")
+sched_resp = requests.post(f"{BASE_URL}/scheduler/schedule", json={
+    "policy": "ppo"
 })
+data = sched_resp.json()
+print(f"Selected Server: {data['selected_server']}")
+print(f"Reward: {data['reward']:.4f}")`
 
-const { job_id } = response.data
+const EXAMPLE_JS = `// Using fetch in the frontend
+import { scheduleTask, resetSimulation } from './api/client'
 
-// Poll for completion
-const poll = setInterval(async () => {
-  const { data } = await axios.get(\`/api/results/\${job_id}\`)
-  if (data.status === 'completed') {
-    clearInterval(poll)
-    console.log('Throughput:', data.throughput) // Expected: 0.590
-    console.log('Drop Rate:', data.drop_rate)   // Expected: 0.41
-  }
-}, 2000)`
+// Reset Gymnasium environment
+await resetSimulation()
+
+// Schedule incoming task with PPO Policy
+const result = await scheduleTask('ppo')
+console.log('Selected Server:', result.selected_server)
+console.log('Throughput:', result.metrics.throughput) // Expected: 0.590`
 
 export default function APIDocs() {
   return (
