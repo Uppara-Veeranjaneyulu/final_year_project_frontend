@@ -85,7 +85,7 @@ export default function Navbar() {
     const check = async () => {
       const res = await checkBackendHealth()
       if (isMounted) {
-        setBackendStatus(res && res.status === 'healthy' ? 'online' : 'offline')
+        setBackendStatus(res && (res.status === 'healthy' || res.status === 'ok') ? 'online' : 'offline')
       }
     }
     check()
