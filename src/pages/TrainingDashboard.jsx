@@ -87,10 +87,19 @@ export default function TrainingDashboard() {
     ]
     setLogLines(initialLogs)
 
-    // Call reset simulation endpoint
-    const resetRes = await resetSimulation()
+    // Call reset simulation endpoint — pass the real dataset ID so backend
+    // loads the matching CSV workload characteristics before the episode begins
+    const resetRes = await resetSimulation(selectedDataset || 'hpc2n')
     if (resetRes && resetRes.status === 'reset_success') {
-      setLogLines((prev) => [...prev, '[00:04] ✓ Connected! Gymnasium CloudSchedulerEnv reset successfully'])
+      const wl = resetRes.workload_characteristics || {}
+      const csvInfo = wl.loaded_from_csv
+        ? `CSV loaded (${wl.num_rows} rows) — CPU: ${(wl.cpu_intensity * 100).toFixed(1)}%, RAM: ${(wl.ram_intensity * 100).toFixed(1)}%, TaskRate: ×${wl.task_rate?.toFixed(2)}, BurstP: ${(wl.burst_prob * 100).toFixed(1)}%`
+        : 'Workload defaults applied'
+      setLogLines((prev) => [
+        ...prev,
+        `[00:04] ✓ Connected! Gymnasium CloudSchedulerEnv reset with dataset: ${resetRes.dataset_id || selectedDataset}`,
+        `[00:05] ✓ ${csvInfo}`,
+      ])
     } else {
       setLogLines((prev) => [...prev, '[00:04] ℹ️ Executing environment simulation engine'])
     }

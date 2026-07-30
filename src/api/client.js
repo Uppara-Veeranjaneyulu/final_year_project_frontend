@@ -20,13 +20,15 @@ export async function checkBackendHealth() {
 }
 
 /**
- * Reset Gymnasium simulation environment
+ * Reset Gymnasium simulation environment with a specific dataset
+ * @param {string} datasetId - e.g. 'hpc2n', 'google-cluster-v2', 'bitbrains'
  */
-export async function resetSimulation() {
+export async function resetSimulation(datasetId = 'hpc2n') {
   try {
     const res = await fetch(`${API_BASE}/api/v1/simulation/reset`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ dataset_id: datasetId }),
     })
     return await res.json()
   } catch (err) {
