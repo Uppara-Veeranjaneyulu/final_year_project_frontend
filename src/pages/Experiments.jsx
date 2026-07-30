@@ -89,11 +89,11 @@ export default function Experiments() {
           {/* Summary stats */}
           <div className="grid grid-cols-3 sm:grid-cols-5 gap-3 mb-8">
             {[
-              { label: 'Total', value: EXPERIMENTS.length },
-              { label: 'Completed', value: EXPERIMENTS.filter((e) => e.status === 'completed').length },
-              { label: 'Pending', value: EXPERIMENTS.filter((e) => e.status === 'pending').length },
-              { label: 'Forecasting', value: EXPERIMENTS.filter((e) => e.type === 'Forecasting').length },
-              { label: 'Scheduling', value: EXPERIMENTS.filter((e) => e.type === 'Scheduling').length },
+              { label: 'Total', value: experiments.length },
+              { label: 'Completed', value: experiments.filter((e) => e.status === 'completed').length },
+              { label: 'Pending', value: experiments.filter((e) => e.status === 'pending').length },
+              { label: 'Forecasting', value: experiments.filter((e) => e.type === 'Forecasting').length },
+              { label: 'Scheduling', value: experiments.filter((e) => e.type === 'Scheduling').length },
             ].map((s) => (
               <div key={s.label} className="card p-4 text-center">
                 <p className="text-2xl font-bold text-surface-900 dark:text-white">{s.value}</p>
