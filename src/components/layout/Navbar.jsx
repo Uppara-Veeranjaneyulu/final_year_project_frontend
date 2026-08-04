@@ -5,7 +5,6 @@ import {
   HiOutlineMenuAlt3, HiOutlineX,
   HiOutlineSun, HiOutlineMoon,
   HiOutlineChevronDown,
-  HiOutlineExternalLink,
   HiOutlineDatabase,
   HiOutlineChartBar,
   HiOutlineCube,
@@ -14,16 +13,29 @@ import {
   HiOutlineTrendingUp,
   HiOutlineBeaker,
   HiOutlineCode,
+  HiOutlineInformationCircle,
+  HiOutlineDocumentText,
+  HiOutlineBookOpen,
+  HiOutlinePencil,
+  HiOutlineUserGroup,
+  HiOutlineHome,
 } from 'react-icons/hi'
 import { MdScience } from 'react-icons/md'
 import { useTheme } from '../../hooks/useTheme'
 import { checkBackendHealth } from '../../api/client'
 
 const NAV_LINKS = [
-  { label: 'Home',        href: '/' },
-  { label: 'About',       href: '/about' },
-  { label: 'Research',    href: '/research-paper' },
-  { label: 'Docs',        href: '/documentation' },
+  { label: 'Home', href: '/' },
+  {
+    label: 'Info',
+    children: [
+      { label: 'About',    href: '/about',          Icon: HiOutlineInformationCircle },
+      { label: 'Research', href: '/research-paper',  Icon: HiOutlineDocumentText },
+      { label: 'Docs',     href: '/documentation',   Icon: HiOutlineBookOpen },
+      { label: 'Blog',     href: '/blog',            Icon: HiOutlinePencil },
+      { label: 'Team',     href: '/team',            Icon: HiOutlineUserGroup },
+    ],
+  },
   {
     label: 'Explore',
     children: [
@@ -36,14 +48,12 @@ const NAV_LINKS = [
   {
     label: 'Platform',
     children: [
-      { label: 'Training Dashboard',  href: '/training',       Icon: HiOutlinePlay },
-      { label: 'Results',             href: '/results',         Icon: HiOutlineTrendingUp },
-      { label: 'Experiments',         href: '/experiments',    Icon: HiOutlineBeaker },
-      { label: 'API Docs',            href: '/api-docs',       Icon: HiOutlineCode },
+      { label: 'Training Dashboard',  href: '/training',    Icon: HiOutlinePlay },
+      { label: 'Results',             href: '/results',      Icon: HiOutlineTrendingUp },
+      { label: 'Experiments',         href: '/experiments', Icon: HiOutlineBeaker },
+      { label: 'API Docs',            href: '/api-docs',    Icon: HiOutlineCode },
     ],
   },
-  { label: 'Blog',        href: '/blog' },
-  { label: 'Team',        href: '/team' },
 ]
 
 function DropdownMenu({ items, isOpen }) {
@@ -168,15 +178,6 @@ export default function Navbar() {
 
         {/* Actions */}
         <div className="flex items-center gap-2">
-          {/* Paper Link */}
-          <Link
-            to="/research-paper"
-            className="hidden sm:flex btn-ghost text-sm py-1.5 gap-1.5"
-          >
-            <HiOutlineExternalLink className="text-xs" />
-            Paper
-          </Link>
-
           {/* Backend Status Badge */}
           <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border border-surface-200 dark:border-surface-700 bg-surface-50 dark:bg-surface-800">
             <span className={`w-2 h-2 rounded-full ${backendStatus === 'online' ? 'bg-emerald-500 animate-pulse' : 'bg-red-400'}`}></span>
