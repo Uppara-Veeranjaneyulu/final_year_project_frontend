@@ -237,12 +237,11 @@ export default function DatasetLibrary() {
             />
             <div className="grid sm:grid-cols-3 gap-4">
               {[
-                { cat: 'Cloud', count: 3, desc: 'Google Cluster (v1, v2.1), Bitbrains GWA-T-12', color: 'blue', icon: '☁️' },
-                { cat: 'HPC',   count: 2, desc: 'Parallel Workloads Archive, HPC2N',            color: 'green', icon: '🖥️' },
-                { cat: 'Scientific', count: 2, desc: 'Spitzer Space Telescope, XMM-Newton',      color: 'purple', icon: '🔭' },
+                { cat: 'Cloud', count: 3, desc: 'Google Cluster (v1, v2.1), Bitbrains GWA-T-12', color: 'blue' },
+                { cat: 'HPC',   count: 2, desc: 'Parallel Workloads Archive, HPC2N',            color: 'green' },
+                { cat: 'Scientific', count: 2, desc: 'Spitzer Space Telescope, XMM-Newton',      color: 'purple' },
               ].map((cat) => (
                 <Card key={cat.cat} hover className="flex gap-4">
-                  <span className="text-2xl">{cat.icon}</span>
                   <div>
                     <div className="flex items-center gap-2 mb-1">
                       <p className="font-semibold text-surface-900 dark:text-white">{cat.cat}</p>

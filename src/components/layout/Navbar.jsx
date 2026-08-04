@@ -6,6 +6,14 @@ import {
   HiOutlineSun, HiOutlineMoon,
   HiOutlineChevronDown,
   HiOutlineExternalLink,
+  HiOutlineDatabase,
+  HiOutlineChartBar,
+  HiOutlineCube,
+  HiOutlineLightningBolt,
+  HiOutlinePlay,
+  HiOutlineTrendingUp,
+  HiOutlineBeaker,
+  HiOutlineCode,
 } from 'react-icons/hi'
 import { MdScience } from 'react-icons/md'
 import { useTheme } from '../../hooks/useTheme'
@@ -19,19 +27,19 @@ const NAV_LINKS = [
   {
     label: 'Explore',
     children: [
-      { label: 'Dataset Library',     href: '/datasets',       icon: '🗄️' },
-      { label: 'Data Visualization',  href: '/visualization',  icon: '📊' },
-      { label: 'ML Models',           href: '/ml-models',      icon: '🤖' },
-      { label: 'RL Models',           href: '/rl-models',      icon: '🎯' },
+      { label: 'Dataset Library',     href: '/datasets',       Icon: HiOutlineDatabase },
+      { label: 'Data Visualization',  href: '/visualization',  Icon: HiOutlineChartBar },
+      { label: 'ML Models',           href: '/ml-models',      Icon: HiOutlineCube },
+      { label: 'RL Models',           href: '/rl-models',      Icon: HiOutlineLightningBolt },
     ],
   },
   {
     label: 'Platform',
     children: [
-      { label: 'Training Dashboard',  href: '/training',       icon: '⚡' },
-      { label: 'Results',             href: '/results',         icon: '📈' },
-      { label: 'Experiments',         href: '/experiments',    icon: '🧪' },
-      { label: 'API Docs',            href: '/api-docs',       icon: '🔌' },
+      { label: 'Training Dashboard',  href: '/training',       Icon: HiOutlinePlay },
+      { label: 'Results',             href: '/results',         Icon: HiOutlineTrendingUp },
+      { label: 'Experiments',         href: '/experiments',    Icon: HiOutlineBeaker },
+      { label: 'API Docs',            href: '/api-docs',       Icon: HiOutlineCode },
     ],
   },
   { label: 'Blog',        href: '/blog' },
@@ -61,7 +69,7 @@ function DropdownMenu({ items, isOpen }) {
                 }`
               }
             >
-              <span className="text-base">{item.icon}</span>
+              {item.Icon && <item.Icon className="text-base flex-shrink-0" />}
               {item.label}
             </NavLink>
           ))}
@@ -232,7 +240,7 @@ export default function Navbar() {
                           `sidebar-link ${isActive ? 'sidebar-link-active' : ''}`
                         }
                       >
-                        <span>{child.icon}</span>
+                        {child.Icon && <child.Icon className="text-base flex-shrink-0" />}
                         {child.label}
                       </NavLink>
                     ))}

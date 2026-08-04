@@ -64,7 +64,7 @@ function RLModelCard({ model }) {
       {model.results === null && model.status === 'specified' && (
         <Card className="mb-4 bg-amber-50 dark:bg-amber-900/10 border-amber-200 dark:border-amber-800/30">
           <p className="text-xs text-amber-700 dark:text-amber-300">
-            ⚠️ No empirical results available yet. Architecture fully specified; evaluation is the immediate next phase.
+            No empirical results available yet. Architecture fully specified; evaluation is the immediate next phase.
           </p>
         </Card>
       )}

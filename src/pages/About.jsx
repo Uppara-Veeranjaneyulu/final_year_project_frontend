@@ -18,7 +18,7 @@ const SECTIONS = [
     badge: 'Problem Statement',
     badgeColor: 'red',
     title: 'The Core Challenge',
-    icon: '⚠️',
+    icon: null,
     content: `Dynamic cloud computing environments experience significant variations in workload intensity, task characteristics, and resource demand. Traditional task scheduling and load balancing techniques such as Round Robin and Least Connections are primarily reactive and often fail to adapt effectively to sudden workload fluctuations and heterogeneous resource requirements.
 
 Sudden increases in task arrival rates may result in overloaded servers, increased response time, resource contention, request drops, and violations of Service-Level Agreements (SLAs). Conversely, over-provisioning resources during periods of low workload results in inefficient resource utilization and increased operational cost.`,
@@ -28,7 +28,7 @@ Sudden increases in task arrival rates may result in overloaded servers, increas
     badge: 'Motivation',
     badgeColor: 'yellow',
     title: 'Why This Research?',
-    icon: '💡',
+    icon: null,
     content: `Machine learning-based workload forecasting provides an opportunity to anticipate future resource demand before overload occurs. Reinforcement Learning (RL) provides a complementary mechanism in which an intelligent agent learns resource allocation decisions through interaction with the computing environment. Instead of relying on fixed scheduling rules, the agent observes system conditions, selects resource allocation actions, and improves its scheduling policy based on performance feedback.
 
 A single centralized RL agent has two structural limitations: (1) it does not scale gracefully as the number of servers grows, and (2) a fixed-weight reward function requires manual tuning and cannot automatically shift emphasis when the dominant failure mode changes. This motivates combining workload forecasting, an adaptive reward mechanism, and a multi-agent RL formulation.`,
@@ -38,7 +38,7 @@ A single centralized RL agent has two structural limitations: (1) it does not sc
     badge: 'Existing System',
     badgeColor: 'gray',
     title: 'Existing Approaches & Limitations',
-    icon: '🔄',
+    icon: null,
     items: [
       { name: 'Round Robin',                issue: 'Simple but ignores resource utilization and task requirements' },
       { name: 'First-Come-First-Serve',      issue: 'No priority, no resource awareness' },
@@ -53,7 +53,7 @@ A single centralized RL agent has two structural limitations: (1) it does not sc
     badge: 'Proposed System',
     badgeColor: 'blue',
     title: 'Our Approach',
-    icon: '🚀',
+    icon: null,
     content: `The proposed framework combines three components:
 
 1. SARIMAX Workload Forecasting: A rolling one-step-ahead forecasting strategy that updates using the latest observation, enabling faster adaptation to regime changes. Achieved RMSE 0.0708 and R² 0.270 — best among all 7 evaluated models.
@@ -67,7 +67,7 @@ A single centralized RL agent has two structural limitations: (1) it does not sc
     badge: 'Objectives',
     badgeColor: 'green',
     title: 'Research Objectives',
-    icon: '🎯',
+    icon: null,
     items: CONTRIBUTIONS.map((c, i) => ({ name: `Objective ${i + 1}`, issue: c, positive: true })),
   },
   {
@@ -75,7 +75,7 @@ A single centralized RL agent has two structural limitations: (1) it does not sc
     badge: 'Expected Outcome',
     badgeColor: 'purple',
     title: 'Expected Outcomes',
-    icon: '✅',
+    icon: null,
     items: [
       { name: 'Higher throughput',      issue: 'PPO achieved 0.590 vs 0.463 for Round Robin', positive: true },
       { name: 'Lower drop rate',        issue: 'PPO achieved 41.00% (lowest among all schedulers)', positive: true },
@@ -111,7 +111,7 @@ export default function About() {
               >
                 {/* Header */}
                 <div className="flex items-center gap-3 mb-5">
-                  <span className="text-2xl">{sec.icon}</span>
+                  {sec.icon && <span className="text-2xl">{sec.icon}</span>}
                   <div>
                     <Badge variant={sec.badgeColor} className="mb-1">{sec.badge}</Badge>
                     <h2 className="text-xl font-bold text-surface-900 dark:text-white">{sec.title}</h2>

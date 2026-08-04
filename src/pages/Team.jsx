@@ -95,7 +95,7 @@ export default function Team() {
           <div className="mt-14 text-center">
             <Card className="inline-block text-left max-w-2xl w-full">
               <h3 className="font-semibold text-surface-900 dark:text-white mb-3">
-                🏛️ Institution
+                Institution
               </h3>
               <p className="text-sm text-surface-600 dark:text-surface-400 leading-relaxed">
                 <strong>Amrita School of Computing</strong><br />

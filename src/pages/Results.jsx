@@ -65,10 +65,10 @@ export default function Results() {
 
             {/* Key metrics */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-              <MetricCard label="Best RMSE"      value="0.0708"  sub="SARIMAX"           icon="🏆" color="blue" />
-              <MetricCard label="Best R²"         value="0.270"   sub="SARIMAX"           icon="📈" color="green" />
-              <MetricCard label="Worst RMSE"     value="2.1734"  sub="Transformer"        icon="📉" color="red" />
-              <MetricCard label="Worst R²"        value="-687.23" sub="Temporal regime shift" icon="⚠️" color="yellow" />
+              <MetricCard label="Best RMSE"      value="0.0708"  sub="SARIMAX"           icon="" color="blue" />
+              <MetricCard label="Best R²"         value="0.270"   sub="SARIMAX"           icon="" color="green" />
+              <MetricCard label="Worst RMSE"     value="2.1734"  sub="Transformer"        icon="" color="red" />
+              <MetricCard label="Worst R²"        value="-687.23" sub="Temporal regime shift" icon="" color="yellow" />
             </div>
 
             {/* Comparison table */}
@@ -146,10 +146,10 @@ export default function Results() {
             </p>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-              <MetricCard label="PPO Throughput"   value="0.590"   sub="Highest"    icon="⚡" color="blue" />
-              <MetricCard label="PPO Drop Rate"    value="41.00%"  sub="Lowest"     icon="📉" color="green" />
-              <MetricCard label="RR Throughput"    value="0.463"   sub="Round Robin" icon="🔄" color="yellow" />
-              <MetricCard label="LC Throughput"    value="0.467"   sub="Least Conn." icon="🔗" color="yellow" />
+              <MetricCard label="PPO Throughput"   value="0.590"   sub="Highest"    icon="" color="blue" />
+              <MetricCard label="PPO Drop Rate"    value="41.00%"  sub="Lowest"     icon="" color="green" />
+              <MetricCard label="RR Throughput"    value="0.463"   sub="Round Robin" icon="" color="yellow" />
+              <MetricCard label="LC Throughput"    value="0.467"   sub="Least Conn." icon="" color="yellow" />
             </div>
 
             <div className="overflow-x-auto rounded-xl border border-surface-200 dark:border-surface-800 mb-6">
@@ -214,7 +214,7 @@ export default function Results() {
                 </p>
               </Card>
               <Card className="bg-amber-50 dark:bg-amber-900/10 border-amber-200 dark:border-amber-800/30">
-                <p className="font-semibold text-amber-800 dark:text-amber-200 mb-2">⚖️ Trade-off Observed</p>
+                <p className="font-semibold text-amber-800 dark:text-amber-200 mb-2">Trade-off Observed</p>
                 <p className="text-sm text-amber-700 dark:text-amber-300 leading-relaxed">
                   Least Connections achieved better latency and load variance, highlighting a trade-off
                   between aggressive resource utilization and response time.

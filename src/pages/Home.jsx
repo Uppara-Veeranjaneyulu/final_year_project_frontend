@@ -26,21 +26,21 @@ const fadeUp = {
 
 // Framework pipeline steps
 const PIPELINE = [
-  { step: 1, label: 'Workload Data', icon: '📦', desc: '7 real-world datasets' },
-  { step: 2, label: 'Preprocessing', icon: '⚙️', desc: '24-step sliding window' },
-  { step: 3, label: 'SARIMAX',       icon: '📈', desc: 'RMSE: 0.0708' },
-  { step: 4, label: 'Adaptive Reward', icon: '🎯', desc: 'AdaptiveRewardManager' },
-  { step: 5, label: 'RL Scheduler',  icon: '🤖', desc: 'PPO / MAPPO' },
-  { step: 6, label: 'Cloud Env',     icon: '☁️', desc: '6 server types' },
+  { step: 1, label: 'Workload Data', desc: '7 real-world datasets' },
+  { step: 2, label: 'Preprocessing', desc: '24-step sliding window' },
+  { step: 3, label: 'SARIMAX',       desc: 'RMSE: 0.0708' },
+  { step: 4, label: 'Adaptive Reward', desc: 'AdaptiveRewardManager' },
+  { step: 5, label: 'RL Scheduler',  desc: 'PPO / MAPPO' },
+  { step: 6, label: 'Cloud Env',     desc: '6 server types' },
 ]
 
 const HIGHLIGHTS = [
-  { icon: '📊', label: '7 Datasets',         desc: 'Google Cluster, Bitbrains, HPC2N, Spitzer, XMM-Newton, PWA' },
-  { icon: '🔬', label: '7 Forecasting Models', desc: 'SARIMAX, GRU, LSTM, BiLSTM, TCN, Transformer, Persistence' },
-  { icon: '🏆', label: 'SARIMAX Winner',     desc: 'RMSE 0.0708, R² 0.270 — Best forecasting model' },
-  { icon: '⚡', label: 'PPO Scheduler',       desc: 'Highest throughput 0.590, Lowest drop rate 41.00%' },
-  { icon: '🧠', label: 'Adaptive Reward',     desc: 'AdaptiveRewardManager auto-tunes reward coefficients' },
-  { icon: '🌐', label: 'MARL Extension',      desc: 'Dec-POMDP with MAPPO — fully specified architecture' },
+  { label: '7 Datasets',         desc: 'Google Cluster, Bitbrains, HPC2N, Spitzer, XMM-Newton, PWA' },
+  { label: '7 Forecasting Models', desc: 'SARIMAX, GRU, LSTM, BiLSTM, TCN, Transformer, Persistence' },
+  { label: 'SARIMAX Winner',     desc: 'RMSE 0.0708, R² 0.270 — Best forecasting model' },
+  { label: 'PPO Scheduler',       desc: 'Highest throughput 0.590, Lowest drop rate 41.00%' },
+  { label: 'Adaptive Reward',     desc: 'AdaptiveRewardManager auto-tunes reward coefficients' },
+  { label: 'MARL Extension',      desc: 'Dec-POMDP with MAPPO — fully specified architecture' },
 ]
 
 export default function Home() {
@@ -96,19 +96,18 @@ export default function Home() {
         <div className="container-lg">
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
             {[
-              { label: 'Datasets',    value: '7',        sub: 'Real-world traces',       icon: '🗄️', color: 'blue'   },
-              { label: 'Models',      value: '7',        sub: 'Forecasting approaches',  icon: '📊', color: 'purple' },
-              { label: 'Best RMSE',   value: '0.0708',   sub: 'SARIMAX',                 icon: '🏆', color: 'green'  },
-              { label: 'Throughput',  value: '0.590',    sub: 'PPO Scheduler',           icon: '⚡', color: 'blue'   },
-              { label: 'Drop Rate',   value: '41.00%',   sub: 'PPO (Lowest)',            icon: '📉', color: 'green'  },
-              { label: 'MARL Agents', value: 'N = 6',    sub: 'Dec-POMDP Architecture', icon: '🤝', color: 'yellow' },
+              { label: 'Datasets',    value: '7',        sub: 'Real-world traces',       color: 'blue'   },
+              { label: 'Models',      value: '7',        sub: 'Forecasting approaches',  color: 'purple' },
+              { label: 'Best RMSE',   value: '0.0708',   sub: 'SARIMAX',                 color: 'green'  },
+              { label: 'Throughput',  value: '0.590',    sub: 'PPO Scheduler',           color: 'blue'   },
+              { label: 'Drop Rate',   value: '41.00%',   sub: 'PPO (Lowest)',            color: 'green'  },
+              { label: 'MARL Agents', value: 'N = 6',    sub: 'Dec-POMDP Architecture', color: 'yellow' },
             ].map((m, i) => (
               <motion.div
                 key={m.label}
                 custom={i} variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}
                 className="card p-4 text-center"
               >
-                <span className="text-2xl">{m.icon}</span>
                 <p className="text-xl font-bold text-surface-900 dark:text-white mt-2">{m.value}</p>
                 <p className="text-xs font-medium text-surface-600 dark:text-surface-400 mt-0.5">{m.label}</p>
                 <p className="text-xs text-surface-400 dark:text-surface-500">{m.sub}</p>
@@ -129,7 +128,6 @@ export default function Home() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {HIGHLIGHTS.map((h, i) => (
               <Card key={h.label} hover animate className="flex gap-4">
-                <span className="text-2xl flex-shrink-0 mt-0.5">{h.icon}</span>
                 <div>
                   <p className="font-semibold text-surface-900 dark:text-white mb-1">{h.label}</p>
                   <p className="text-sm text-surface-500 dark:text-surface-400 leading-relaxed">{h.desc}</p>
@@ -160,7 +158,6 @@ export default function Home() {
                   transition={{ delay: i * 0.1 }}
                   className="card p-4 text-center w-32 sm:w-36"
                 >
-                  <span className="text-xl">{p.icon}</span>
                   <p className="text-xs font-semibold text-surface-900 dark:text-white mt-2">{p.label}</p>
                   <p className="text-xs text-surface-400 dark:text-surface-500 mt-0.5">{p.desc}</p>
                 </motion.div>

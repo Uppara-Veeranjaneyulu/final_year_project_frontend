@@ -248,13 +248,12 @@ export default function DataVisualization() {
             />
             <div className="grid sm:grid-cols-2 gap-4">
               {[
-                { icon: '🏆', title: 'SARIMAX Wins', text: 'RMSE 0.0708 vs 0.0789 for Naive Persistence and 2.1734 for Transformer. Statistical model outperforms all DL models.' },
-                { icon: '📉', title: 'Temporal Regime Shift', text: 'DL models learned training distribution only. The final 20% contained bursts absent from training data, causing catastrophic R² values.' },
-                { icon: '⚡', title: 'PPO Throughput', text: 'PPO scheduler achieves 0.590 throughput vs. 0.463 for Round Robin — a 27.4% improvement in resource utilization.' },
-                { icon: '⚖️', title: 'Latency Trade-off', text: 'Least Connections achieves better latency and load variance than PPO, revealing a throughput vs. response-time trade-off.' },
+                { title: 'SARIMAX Wins', text: 'RMSE 0.0708 vs 0.0789 for Naive Persistence and 2.1734 for Transformer. Statistical model outperforms all DL models.' },
+                { title: 'Temporal Regime Shift', text: 'DL models learned training distribution only. The final 20% contained bursts absent from training data, causing catastrophic R² values.' },
+                { title: 'PPO Throughput', text: 'PPO scheduler achieves 0.590 throughput vs. 0.463 for Round Robin — a 27.4% improvement in resource utilization.' },
+                { title: 'Latency Trade-off', text: 'Least Connections achieves better latency and load variance than PPO, revealing a throughput vs. response-time trade-off.' },
               ].map((insight) => (
                 <Card key={insight.title} hover className="flex gap-3">
-                  <span className="text-2xl flex-shrink-0">{insight.icon}</span>
                   <div>
                     <p className="font-semibold text-surface-900 dark:text-white mb-1">{insight.title}</p>
                     <p className="text-sm text-surface-500 dark:text-surface-400 leading-relaxed">{insight.text}</p>

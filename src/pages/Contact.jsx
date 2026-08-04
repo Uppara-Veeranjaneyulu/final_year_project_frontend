@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { HiOutlineMail, HiOutlineUsers, HiOutlineArrowRight } from 'react-icons/hi'
+import { HiOutlineMail, HiOutlineUsers, HiOutlineArrowRight, HiOutlineCheckCircle } from 'react-icons/hi'
 import PageLayout from '../components/layout/PageLayout'
 import Card from '../components/ui/Card'
 import SectionHeader from '../components/ui/SectionHeader'
@@ -32,7 +32,7 @@ export default function Contact() {
               <h3 className="font-semibold text-surface-900 dark:text-white mb-4">Send a Message</h3>
               {sent ? (
                 <Card className="text-center py-10">
-                  <span className="text-4xl mb-3 block">✅</span>
+                  <HiOutlineCheckCircle className="text-5xl text-emerald-500 mx-auto mb-3" />
                   <p className="font-semibold text-surface-900 dark:text-white">Message Sent!</p>
                   <p className="text-sm text-surface-500 mt-2">We'll get back to you soon.</p>
                 </Card>

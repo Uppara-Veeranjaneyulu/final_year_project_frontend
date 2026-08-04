@@ -12,14 +12,14 @@ import { DATASETS, ML_MODELS, RL_MODELS, PPO_CONFIG, FORECASTING_RESULTS } from 
 import { resetSimulation, scheduleTask, API_BASE } from '../api/client'
 
 const STEPS = [
-  { id: 1, label: 'Select Dataset',     icon: '🗄️' },
-  { id: 2, label: 'Select Features',    icon: '📋' },
-  { id: 3, label: 'Choose Target',      icon: '🎯' },
-  { id: 4, label: 'Select Model Type',  icon: '🤖' },
-  { id: 5, label: 'Choose Model',       icon: '⚡' },
-  { id: 6, label: 'Hyperparameters',    icon: '⚙️' },
-  { id: 7, label: 'Train',              icon: '🚀' },
-  { id: 8, label: 'View Results',       icon: '📊' },
+  { id: 1, label: 'Select Dataset',     icon: '1' },
+  { id: 2, label: 'Select Features',    icon: '2' },
+  { id: 3, label: 'Choose Target',      icon: '3' },
+  { id: 4, label: 'Select Model Type',  icon: '4' },
+  { id: 5, label: 'Choose Model',       icon: '5' },
+  { id: 6, label: 'Hyperparameters',    icon: '6' },
+  { id: 7, label: 'Train',              icon: '7' },
+  { id: 8, label: 'View Results',       icon: '8' },
 ]
 
 function StepIndicator({ steps, activeStep }) {
@@ -85,15 +85,15 @@ export default function TrainingDashboard() {
   ]
 
   const AVAILABLE_METRICS = [
-    { id: 'throughput', name: 'Throughput', unit: 'tasks/sec', type: 'RL', icon: '⚡' },
-    { id: 'dropRate', name: 'Task Drop Rate', unit: '%', type: 'RL', icon: '📉' },
-    { id: 'cpuUtil', name: 'CPU Utilization', unit: '%', type: 'RL', icon: '💻' },
-    { id: 'latency', name: 'Average Latency', unit: 'ms', type: 'RL', icon: '⏱️' },
-    { id: 'loadVar', name: 'Load Variance', unit: 'σ²', type: 'RL', icon: '⚖️' },
-    { id: 'reward', name: 'Adaptive Reward', unit: 'pts', type: 'RL', icon: '🎯' },
-    { id: 'mae', name: 'Mean Absolute Error (MAE)', unit: '', type: 'ML', icon: '📊' },
-    { id: 'rmse', name: 'Root Mean Squared Error (RMSE)', unit: '', type: 'ML', icon: '📈' },
-    { id: 'r2', name: 'R² Score', unit: '', type: 'ML', icon: '📐' },
+    { id: 'throughput', name: 'Throughput', unit: 'tasks/sec', type: 'RL', icon: '' },
+    { id: 'dropRate', name: 'Task Drop Rate', unit: '%', type: 'RL', icon: '' },
+    { id: 'cpuUtil', name: 'CPU Utilization', unit: '%', type: 'RL', icon: '' },
+    { id: 'latency', name: 'Average Latency', unit: 'ms', type: 'RL', icon: '' },
+    { id: 'loadVar', name: 'Load Variance', unit: 'σ²', type: 'RL', icon: '' },
+    { id: 'reward', name: 'Adaptive Reward', unit: 'pts', type: 'RL', icon: '' },
+    { id: 'mae', name: 'Mean Absolute Error (MAE)', unit: '', type: 'ML', icon: '' },
+    { id: 'rmse', name: 'Root Mean Squared Error (RMSE)', unit: '', type: 'ML', icon: '' },
+    { id: 'r2', name: 'R² Score', unit: '', type: 'ML', icon: '' },
   ]
 
   const toggleMetric = (id) => {
@@ -249,7 +249,7 @@ export default function TrainingDashboard() {
           {step === 1 && (
             <Card>
               <h3 className="font-semibold text-surface-900 dark:text-white mb-2 flex items-center gap-2">
-                <span>🗄️</span> Step 1: Select Dataset
+                Step 1: Select Dataset
               </h3>
               <p className="text-xs text-surface-400 mb-4">
                 Choose one of the 10 real workload datasets to train and evaluate your model.
@@ -293,9 +293,9 @@ export default function TrainingDashboard() {
           {step === 2 && currentDataset && (
             <Card>
               <h3 className="font-semibold text-surface-900 dark:text-white mb-1">
-                🗄️ Selected Dataset: <span className="text-primary-600">{currentDataset.name}</span>
+                Selected Dataset: <span className="text-primary-600">{currentDataset.name}</span>
               </h3>
-              <h3 className="font-semibold text-surface-900 dark:text-white mb-2 mt-4">📋 Step 2: Select Input Features</h3>
+              <h3 className="font-semibold text-surface-900 dark:text-white mb-2 mt-4">Step 2: Select Input Features</h3>
               <p className="text-xs text-surface-400 mb-4">Choose input attributes to feed into the model.</p>
               
               <div className="flex items-center gap-2 mb-3">
@@ -344,7 +344,7 @@ export default function TrainingDashboard() {
           {/* STEP 3: Target & Metrics Selection */}
           {step === 3 && currentDataset && (
             <Card>
-              <h3 className="font-semibold text-surface-900 dark:text-white mb-2">🎯 Step 3: Choose Target & Evaluation Metrics</h3>
+              <h3 className="font-semibold text-surface-900 dark:text-white mb-2">Step 3: Choose Target & Evaluation Metrics</h3>
               <p className="text-xs text-surface-400 mb-6">
                 Configure what variable the model optimizes/predicts and pick which evaluation metrics to calculate during training.
               </p>
@@ -365,7 +365,7 @@ export default function TrainingDashboard() {
                           : 'border-surface-200 dark:border-surface-700 text-surface-600 dark:text-surface-400 hover:border-surface-300'
                       }`}
                     >
-                      {targetVariable === target ? '🎯 ' : '⚪ '}{target}
+                      {targetVariable === target ? '● ' : '○ '}{target}
                     </button>
                   ))}
                 </div>
@@ -441,11 +441,11 @@ export default function TrainingDashboard() {
           {/* STEP 4: Model Type */}
           {step === 4 && (
             <Card>
-              <h3 className="font-semibold text-surface-900 dark:text-white mb-4">🤖 Step 4: Select Model Type</h3>
+              <h3 className="font-semibold text-surface-900 dark:text-white mb-4">Step 4: Select Model Type</h3>
               <div className="grid sm:grid-cols-2 gap-4 mb-6">
                 {[
-                  { id: 'RL',  label: 'Reinforcement Learning', desc: 'PPO, MAPPO, DQN, A2C, SAC — for dynamic task scheduling & resource allocation', icon: '🎯' },
-                  { id: 'ML',  label: 'Machine Learning / Forecasting', desc: 'SARIMAX, LSTM, GRU, BiLSTM, TCN, Transformer — for workload prediction', icon: '📊' },
+                  { id: 'RL',  label: 'Reinforcement Learning', desc: 'PPO, MAPPO, DQN, A2C, SAC — for dynamic task scheduling & resource allocation', icon: 'RL' },
+                  { id: 'ML',  label: 'Machine Learning / Forecasting', desc: 'SARIMAX, LSTM, GRU, BiLSTM, TCN, Transformer — for workload prediction', icon: 'ML' },
                 ].map((t) => (
                   <button
                     key={t.id}
@@ -477,7 +477,7 @@ export default function TrainingDashboard() {
           {step === 5 && (
             <Card>
               <h3 className="font-semibold text-surface-900 dark:text-white mb-4">
-                ⚡ Step 5: Choose {modelType === 'RL' ? 'Reinforcement Learning' : 'Forecasting'} Model
+                Step 5: Choose {modelType === 'RL' ? 'Reinforcement Learning' : 'Forecasting'} Model
               </h3>
               <div className="grid sm:grid-cols-2 gap-3 mb-6">
                 {(modelType === 'RL' ? RL_MODELS : ML_MODELS).map((m) => (
@@ -507,7 +507,7 @@ export default function TrainingDashboard() {
           {/* STEP 6: Hyperparameters */}
           {step === 6 && (
             <Card>
-              <h3 className="font-semibold text-surface-900 dark:text-white mb-2">⚙️ Step 6: Hyperparameters</h3>
+              <h3 className="font-semibold text-surface-900 dark:text-white mb-2">Step 6: Hyperparameters</h3>
               <p className="text-xs text-surface-400 mb-5">Customize training parameters for {selectedModel.toUpperCase()}.</p>
               <div className="grid sm:grid-cols-2 gap-4 mb-6">
                 {Object.entries(hyperparams).map(([key, val]) => (
@@ -533,7 +533,7 @@ export default function TrainingDashboard() {
           {/* STEP 7: Train */}
           {step === 7 && (
             <Card>
-              <h3 className="font-semibold text-surface-900 dark:text-white mb-2">🚀 Step 7: Train Model</h3>
+              <h3 className="font-semibold text-surface-900 dark:text-white mb-2">Step 7: Train Model</h3>
               <p className="text-xs text-surface-400 mb-5">Review configuration summary and begin execution.</p>
 
               <div className="grid sm:grid-cols-4 gap-3 mb-6">

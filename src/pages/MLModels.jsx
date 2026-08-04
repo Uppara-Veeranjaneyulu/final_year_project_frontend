@@ -23,7 +23,7 @@ function ModelCard({ model }) {
         <div>
           <div className="flex items-center gap-2 mb-1.5">
             <Badge variant={statusColors[model.status] || 'gray'}>
-              {model.status === 'winner' ? '🏆 Selected' : model.status === 'evaluated' ? 'Evaluated' : 'Available'}
+              {model.status === 'winner' ? 'Selected' : model.status === 'evaluated' ? 'Evaluated' : 'Available'}
             </Badge>
             <Badge variant="purple">{model.category}</Badge>
           </div>
@@ -124,7 +124,7 @@ export default function MLModels() {
           {/* Key finding banner */}
           <Card className="mb-8 bg-primary-50 dark:bg-primary-900/10 border-primary-200 dark:border-primary-800/50">
             <div className="flex gap-4">
-              <span className="text-2xl">🔬</span>
+              <span className="text-base mr-1 text-primary-600 dark:text-primary-400">*</span>
               <div>
                 <p className="font-semibold text-primary-800 dark:text-primary-200 mb-1">
                   Key Finding: Temporal Regime Shift
@@ -190,7 +190,7 @@ export default function MLModels() {
                       </td>
                       <td className="px-5 py-3.5">
                         <Badge variant={i === 0 ? 'blue' : i === 1 ? 'green' : 'red'}>
-                          {i === 0 ? '🥇 Best' : i === 1 ? '🥈 2nd' : `#${i + 1}`}
+                          {i === 0 ? '#1 Best' : i === 1 ? '#2' : `#${i + 1}`}
                         </Badge>
                       </td>
                     </tr>

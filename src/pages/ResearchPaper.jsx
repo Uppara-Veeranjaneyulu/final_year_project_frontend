@@ -387,7 +387,7 @@ export default function ResearchPaper() {
                 </p>
                 <Card className="mt-4 bg-primary-50 dark:bg-primary-900/10 border-primary-200 dark:border-primary-800/50">
                   <p className="text-sm font-medium text-primary-800 dark:text-primary-200">
-                    🏆 SARIMAX selected as the forecasting backbone (RMSE: 0.0708, R²: 0.270)
+                    SARIMAX selected as the forecasting backbone (RMSE: 0.0708, R²: 0.270)
                   </p>
                 </Card>
               </PaperSection>
@@ -520,7 +520,7 @@ export default function ResearchPaper() {
               <PaperSection id="marl" number="13" title="Multi-Agent Reinforcement Learning Extension">
                 <Card className="bg-amber-50 dark:bg-amber-900/10 border-amber-200 dark:border-amber-800/30 mb-5">
                   <p className="text-sm text-amber-800 dark:text-amber-200">
-                    ⚠️ <strong>Note:</strong> The MARL extension is fully specified architecturally. No empirical training
+                    <strong>Note:</strong> The MARL extension is fully specified architecturally. No empirical training
                     results are reported here — evaluation is identified as the immediate next phase of this work.
                   </p>
                 </Card>

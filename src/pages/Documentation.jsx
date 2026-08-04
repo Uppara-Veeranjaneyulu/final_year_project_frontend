@@ -399,7 +399,7 @@ export default function Documentation() {
             <DocSection id="mappo-train" title="MAPPO Configuration">
               <Card className="mb-4 bg-amber-50 dark:bg-amber-900/10 border-amber-200 dark:border-amber-800/30">
                 <p className="text-xs text-amber-700 dark:text-amber-300">
-                  ⚠️ MAPPO training is not yet implemented. Only the architecture is specified in the paper.
+                  MAPPO training is not yet implemented. Only the architecture is specified in the paper.
                   The configuration below is as described in Section 13 / Table 4.
                 </p>
               </Card>
